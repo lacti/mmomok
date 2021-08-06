@@ -13,15 +13,18 @@
   },
   "dependencies": {
     "@yingyeothon/naive-redis": "^0.3.3",
+    "mime-types": "^2.1.32",
     "p-memoize": "^4.0.1",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.52.1",
     "@types/aws-lambda": "^8.10.81",
+    "@types/mime-types": "^2.1.0",
     "@types/node": "14",
     "serverless": "^2.53.1",
     "serverless-offline": "^8.0.0",
+    "serverless-plugin-scripts": "^1.0.2",
     "serverless-prune-plugin": "^1.5.1",
     "serverless-webpack": "^5.5.1",
     "ts-loader": "^9.2.5",

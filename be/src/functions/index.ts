@@ -1,4 +1,4 @@
-export { default as hello } from "./hello";
+export { default as serveHtml } from "./serveHtml";
 export { default as game } from "./game";
 export { default as entrypoint } from "./entrypoint";
 export { default as connect } from "./connect";

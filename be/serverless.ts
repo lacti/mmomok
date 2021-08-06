@@ -12,11 +12,17 @@ const serverlessConfiguration: AWS = {
       automatic: true,
       number: 7,
     },
+    scripts: {
+      hooks: {
+        "webpack:package:packExternalModules": "/bin/bash prepackage.sh",
+      },
+    },
   },
   package: {
     individually: true,
   },
   plugins: [
+    "serverless-plugin-scripts",
     "serverless-webpack",
     "serverless-prune-plugin",
     "serverless-offline",
@@ -29,6 +35,7 @@ const serverlessConfiguration: AWS = {
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
+      binaryMediaTypes: ["image/*"],
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -50,7 +57,7 @@ const serverlessConfiguration: AWS = {
                 [
                   "arn:aws:lambda",
                   { Ref: "AWS::Region" },
-                  { Ref: "AWS::Account" },
+                  { Ref: "AWS::AccountId" },
                   "function",
                   gameActorLambdaName,
                 ],
