@@ -8,10 +8,6 @@ const serverlessConfiguration: AWS = {
   service: "mmomok",
   frameworkVersion: "2",
   custom: {
-    webpack: {
-      webpackConfig: "./webpack.config.js",
-      includeModules: true,
-    },
     prune: {
       automatic: true,
       number: 7,

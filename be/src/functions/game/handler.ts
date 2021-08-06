@@ -6,6 +6,7 @@ import { GameResponse, LoadedResponse } from "../../models/GameMessage";
 import {
   gameLockRedisKeyFromGameId,
   gameQueueRedisKeyFromGameId,
+  redisKeyForGameIdMappingFromConnectionId,
 } from "../../support/redis/redisKeys";
 import { randomBoolean, randomNumber } from "../../support/random";
 
@@ -19,7 +20,6 @@ import QueueItem from "../../models/QueueItem";
 import checkIfWin from "./checkIfWin";
 import enqueueToGameQueue from "../../support/redis/enqueueToGameQueue";
 import redisDel from "@yingyeothon/naive-redis/lib/del";
-import { redisKeyForGameIdMappingFromConnectionId } from "../../support/redis/redisKeys";
 import redisLrange from "@yingyeothon/naive-redis/lib/lrange";
 import redisLtrim from "@yingyeothon/naive-redis/lib/ltrim";
 import redisSet from "@yingyeothon/naive-redis/lib/set";
@@ -27,8 +27,8 @@ import withRedis from "../../support/redis/withRedis";
 
 const lambdaTtl = 900 * 1000;
 const gameSeconds = 600;
-const width = 100;
-const height = 100;
+const width = 20;
+const height = 20;
 
 const offline = !!process.env.IS_OFFLINE;
 const webSocketEndpoint = process.env.WS_ENDPOINT!;
@@ -137,6 +137,8 @@ export const main: Handler<{ gameId: string }, void> = async (event) => {
               user: newbie.user,
               name: newbie.name,
               color: newbie.color,
+              x: newbie.x,
+              y: newbie.y,
             });
             users.push(newbie);
             console.info({ item, newbie }, "Welcome");

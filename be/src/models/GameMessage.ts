@@ -35,6 +35,8 @@ export interface EnteredResponse {
   user: number;
   name: string;
   color: Color;
+  x: number;
+  y: number;
 }
 
 export interface LeavedResponse {
