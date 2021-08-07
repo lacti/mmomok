@@ -21,6 +21,8 @@ export default interface Context {
 
   error: boolean;
   end: boolean;
+
+  latency: number[];
 }
 
 export function emptyContext(): Context {
@@ -35,5 +37,6 @@ export function emptyContext(): Context {
     winner: null,
     error: false,
     end: false,
+    latency: [],
   };
 }

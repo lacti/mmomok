@@ -42,10 +42,12 @@ export default function GameView() {
     }
   }, [])
 
-  const { lifetime, users, stones, width, height, winner } = context;
+  const { lifetime, users, stones, width, height, winner, latency } = context;
   const tileSize = Math.floor(Math.min(600 / width, 600 / height));
 
+  const ping = latency.length === 0 ? 0 : latency.reduce((a, b) => a+ b, 0) / latency.length;
   return <div>
+    <h4>ping {ping.toFixed(2)}ms</h4>
     {!winner && 
     (<h2>{lifetime > 0 ? `${lifetime}초 남았습니다.` : `로딩 중입니다.`}</h2>)}
     {winner && 
@@ -74,11 +76,11 @@ function Tile({
   const user = users.find(u => u.x === x && u.y === y);
   return <div style={{position: "relative"}}>
     {stone && (
-    <img src={stone.color === 'b' ? GoBlack : GoWhite} alt="go" width={tileSize} height={tileSize} style={{position: "absolute", top: tileSize / 2, left: 0}} />
+    <img src={stone.color === 'b' ? GoBlack : GoWhite} alt="go" width={tileSize} height={tileSize} style={{position: "absolute", top: -tileSize / 2, left: 0}} />
     )}
     {user && (
-    <><img src={Character} alt={user.name} width={tileSize} height={tileSize} style={{position: "absolute", top: tileSize / 2, left: 0}} />
-    <span style={{position: "absolute", top: tileSize / 2, left: 0, fontSize: 6}}>{user.name}</span></>
+    <><img src={Character} alt={user.name} width={tileSize} height={tileSize} style={{position: "absolute", top: -tileSize / 2, left: 0}} />
+    <span style={{position: "absolute", top: -tileSize / 2, left: 0, fontSize: 6}}>{user.name}</span></>
     )}
   </div>
 }

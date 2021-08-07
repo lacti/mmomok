@@ -11,7 +11,16 @@ export interface PlaceRequest {
   type: "place";
 }
 
-export type GameRequest = LoadRequest | MoveRequest | PlaceRequest;
+export interface PingRequest {
+  type: "ping";
+  clientRequest: number;
+}
+
+export type GameRequest =
+  | LoadRequest
+  | MoveRequest
+  | PlaceRequest
+  | PingRequest;
 
 type Color = "b" | "w";
 
@@ -73,6 +82,12 @@ export interface PlacedResponse {
   y: number;
 }
 
+export interface PongResponse {
+  type: "pong";
+  clientRequest: number;
+  serverDequeue: number;
+}
+
 export type GameResponse =
   | LoadedResponse
   | EnteredResponse
@@ -80,4 +95,5 @@ export type GameResponse =
   | GameOverResponse
   | ClockResponse
   | MovedResponse
-  | PlacedResponse;
+  | PlacedResponse
+  | PongResponse;

@@ -245,6 +245,12 @@ export const main: Handler<{ gameId: string }, void> = async (event) => {
                   });
                 }
                 break;
+              case "ping":
+                await reply(item.connectionId, {
+                  type: "pong",
+                  clientRequest: item.payload.clientRequest,
+                  serverDequeue: Date.now(),
+                });
             }
             break;
         }

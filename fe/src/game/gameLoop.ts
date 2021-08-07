@@ -39,15 +39,20 @@ export default async function gameLoop({
     socket.send(JSON.stringify(request));
   }
 
+  let pingTimer: NodeJS.Timer | null = null;
   socket.addEventListener("open", async () => {
     context = emptyContext();
     sender = send;
     await sleep(500);
     await send({ type: "load" });
+    pingTimer = setInterval(() => {
+      send({ type: "ping", clientRequest: Date.now() });
+    }, 1000);
   });
 
   socket.addEventListener("message", async (event) => {
     const response: GameResponse = JSON.parse(event.data);
+    const now = Date.now();
     console.info({ response }, "OnMessage");
     switch (response.type) {
       case "loaded":
@@ -90,6 +95,14 @@ export default async function gameLoop({
       case "gameover":
         context.winner = response.winner;
         break;
+      case "pong":
+        context.latency.push(now - response.clientRequest);
+        console.info({
+          reqToDeq: response.serverDequeue - response.clientRequest,
+          deqToNow: now - response.serverDequeue,
+          reqToNow: now - response.clientRequest,
+        });
+        break;
     }
   });
   socket.addEventListener("error", (event) => {
@@ -99,6 +112,10 @@ export default async function gameLoop({
   socket.addEventListener("close", (event) => {
     console.info({ event }, "Socket is over");
     context.end = true;
+    if (pingTimer) {
+      clearInterval(pingTimer);
+      pingTimer = null;
+    }
     sender = null;
   });
 }
