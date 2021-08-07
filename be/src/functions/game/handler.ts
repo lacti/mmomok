@@ -8,7 +8,6 @@ import {
   gameQueueRedisKeyFromGameId,
   redisKeyForGameIdMappingFromConnectionId,
 } from "../../support/redis/redisKeys";
-import { randomBoolean, randomNumber } from "../../support/random";
 
 import { ApiGatewayManagementApi } from "aws-sdk";
 import Color from "./models/Color";
@@ -19,6 +18,7 @@ import Placed from "./models/Placed";
 import QueueItem from "../../models/QueueItem";
 import checkIfWin from "./checkIfWin";
 import enqueueToGameQueue from "../../support/redis/enqueueToGameQueue";
+import { randomNumber } from "../../support/random";
 import redisDel from "@yingyeothon/naive-redis/lib/del";
 import redisLrange from "@yingyeothon/naive-redis/lib/lrange";
 import redisLtrim from "@yingyeothon/naive-redis/lib/ltrim";
@@ -126,7 +126,7 @@ export const main: Handler<{ gameId: string }, void> = async (event) => {
           case "connect":
             const newbie = {
               user: ++userSequence,
-              color: (randomBoolean() ? "b" : "w") as Color,
+              color: (users.length % 2 === 0 ? "b" : "w") as Color,
               connectionId: item.connectionId,
               name: item.payload.memberId,
               x: randomNumber(width),
